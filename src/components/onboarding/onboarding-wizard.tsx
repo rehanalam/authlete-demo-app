@@ -5,21 +5,36 @@ import React, { useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Title } from "../ui/title";
-import { ServiceSetup } from "./service-setup";
-import { ClientSetup } from "./client-setup";
 import { OnboardingSuccess } from "./onboarding-success";
+import ServiceSetup from "./service-setup";
+import ClientSetup from "./client-setup";
 
-export function OnboardingWizard() {
-  const steps = [
-    { title: "Service Setup", component: <ServiceSetup /> },
-    { title: "Client Setup", component: <ClientSetup /> },
-    { title: "Success", component: <OnboardingSuccess /> },
-  ];
+interface OnboardingWizardProps {
+  organizationId: string;
+}
 
+export function OnboardingWizard({ organizationId }: OnboardingWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
 
   const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
+
+  const steps = [
+    {
+      title: "Service Setup",
+      component: (
+        <ServiceSetup organizationId={organizationId} onNext={nextStep} onBack={prevStep} />
+      ),
+    },
+    {
+      title: "Client Setup",
+      component: <ClientSetup onNext={nextStep} onBack={prevStep} />,
+    },
+    {
+      title: "Success",
+      component: <OnboardingSuccess organizationId={organizationId} onBack={prevStep} />,
+    },
+  ];
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 bg-white shadow rounded">

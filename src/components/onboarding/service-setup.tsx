@@ -67,7 +67,7 @@ export default function ServiceSetupStep({
         organizationId,
       });
 
-      if (result.success && result.service?.number && result.service?.apiKey) {
+      if (result.success && result.service?.apiKey) {
         setService(result.service.apiKey.toString());
         onNext();
       }

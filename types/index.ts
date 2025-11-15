@@ -52,13 +52,6 @@ export interface AuthleteService {
   [key: string]: unknown;
 }
 
-export interface ServiceFormData {
-  serviceName: string;
-  description?: string;
-  cluster: string;
-  fapiEnabled?: boolean;
-}
-
 export interface AuthleteClient {
   number?: number; // Client number (ID)
   serviceNumber?: number;
@@ -73,12 +66,4 @@ export interface AuthleteClient {
   responseTypes?: string[];
   grantTypes?: string[];
   [key: string]: unknown;
-}
-export interface ClientFormData {
-  clientName: string;
-  clientId?: string;
-  description?: string;
-  clientType: "PUBLIC" | "CONFIDENTIAL";
-  applicationType?: "WEB" | "NATIVE";
-  redirectUris?: string[];
 }
