@@ -1,9 +1,16 @@
 import { OnboardingWizard } from "@/components/onboarding/onboarding-wizard";
 
-export default function OnboardingPage() {
+interface OnboardingPageProps {
+  params: { organizationId: string };
+}
+
+export default async function OnboardingPage({ params }: OnboardingPageProps) {
+  const { organizationId } = await params;
+
   return (
     <div>
-      <OnboardingWizard />
+      {organizationId}
+      <OnboardingWizard organizationId={organizationId} />
     </div>
   );
 }

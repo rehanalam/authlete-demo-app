@@ -115,10 +115,7 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 bg-white p-8 rounded-lg border shadow-sm"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <Label htmlFor="clientName">Client Name *</Label>
           <Input
@@ -213,7 +210,7 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
           />
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex justify-between gap-4 pt-4">
           <Button variant="outline" onClick={onBack} disabled={createClientMutation.isPending}>
             Back
           </Button>

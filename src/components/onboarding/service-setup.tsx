@@ -100,10 +100,7 @@ export default function ServiceSetupStep({
         </Card>
       )}
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 bg-white p-8 rounded-lg border shadow-sm"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
         <div>
           <Label className="block mb-2">API Cluster *</Label>
           <Text variant="sm" color="text-gray-500" className="mb-3">
@@ -187,16 +184,11 @@ export default function ServiceSetupStep({
           </Checkbox>
         </div>
 
-        <div className="flex gap-4 pt-4">
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={onBack}
-            disabled={createServiceMutation.isPending}
-          >
+        <div className="flex justify-between gap-4 pt-4">
+          <Button variant="outline" onClick={onBack} disabled={createServiceMutation.isPending}>
             Back
           </Button>
-          <Button type="submit" className="flex-1" disabled={createServiceMutation.isPending}>
+          <Button type="submit" disabled={createServiceMutation.isPending}>
             {createServiceMutation.isPending ? "Creating Service..." : "Continue"}
           </Button>
         </div>

@@ -29,8 +29,8 @@ export function OnboardingSuccess({ organizationId, onBack }: OnboardingSuccessP
       <div className="bg-green-50 border border-green-200 p-4 rounded-lg text-left">
         <Text className="font-semibold text-green-800 mb-1">Service & Client Info:</Text>
         <Text className="text-sm text-green-900">
-          {serviceId && <div>Service Number: {serviceId}</div>}
-          {clientId && <div>Client ID: {clientId}</div>}
+          {serviceId && <span>Service Number: {serviceId}</span>}
+          {clientId && <span>Client ID: {clientId}</span>}
         </Text>
       </div>
 

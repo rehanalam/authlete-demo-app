@@ -47,7 +47,8 @@ export function OnboardingWizard({ organizationId }: OnboardingWizardProps) {
 
       <div className="pt-4">{steps[currentStep].component}</div>
 
-      <div className="flex justify-between mt-6">
+      {/* TODO: USING FOR DEV TESTING */}
+      {/* <div className="flex justify-between mt-6">
         <Button variant="outline" onClick={prevStep} disabled={currentStep === 0}>
           Back
         </Button>
@@ -56,7 +57,7 @@ export function OnboardingWizard({ organizationId }: OnboardingWizardProps) {
         ) : (
           <Button onClick={() => alert("Wizard Complete!")}>Finish</Button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
