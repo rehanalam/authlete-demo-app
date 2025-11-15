@@ -1,3 +1,9 @@
+import { OnboardingWizard } from "@/components/onboarding/onboarding-wizard";
+
 export default function OnboardingPage() {
-  return <div>Onboarding page</div>;
+  return (
+    <div>
+      <OnboardingWizard />
+    </div>
+  );
 }
