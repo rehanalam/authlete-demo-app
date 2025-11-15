@@ -1,6 +1,6 @@
 import { Organization } from "../../types";
 
-const getAccessToken = (): string => {
+export const getAccessToken = (): string => {
   const token = process.env.AUTHLETE_BEARER || "";
   if (!token) {
     console.warn("AUTHLETE_BEARER not set in environment");
