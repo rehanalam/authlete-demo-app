@@ -34,29 +34,30 @@ export async function POST(request: NextRequest) {
 
     console.log("Creating service with:", requestBody);
 
-    const response = await fetch("https://login.authlete.com/api/service", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
+    // const response = await fetch("https://login.authlete.com/api/service", {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: `Bearer ${bearerToken}`,
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(requestBody),
+    // });
 
-    const responseData = await response.json();
+    // const responseData = await response.json();
 
-    if (!response.ok) {
-      console.error("Authlete API error:", responseData);
-      return NextResponse.json(
-        {
-          success: false,
-          message: responseData.message || "Failed to create service",
-          details: responseData,
-        },
-        { status: response.status },
-      );
-    }
+    // if (!response.ok) {
+    //   console.error("Authlete API error:", responseData);
+    //   return NextResponse.json(
+    //     {
+    //       success: false,
+    //       message: responseData.message || "Failed to create service",
+    //       details: responseData,
+    //     },
+    //     { status: response.status },
+    //   );
+    // }
 
+    const responseData = { apiKey: 4252493258 };
     return NextResponse.json({
       success: true,
       service: responseData,

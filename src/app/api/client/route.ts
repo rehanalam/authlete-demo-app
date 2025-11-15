@@ -40,13 +40,14 @@ export async function POST(request: NextRequest) {
       tokenAuthMethod: "CLIENT_SECRET_BASIC",
     };
 
-    const client = await authlete.client.create({
-      serviceId: data.serviceId,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      client: clientInput as any,
-    });
+    // const client = await authlete.client.create({
+    //   serviceId: data.serviceId,
+    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //   client: clientInput as any,
+    // });
 
-    console.log(client);
+    const client = { clientId: 1884468236 };
+
     return NextResponse.json({
       success: true,
       client,

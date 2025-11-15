@@ -21,7 +21,7 @@ export function OnboardingSuccess({ organizationId, onBack }: OnboardingSuccessP
         <CheckCircle className="w-10 h-10 text-green-600" />
       </div>
 
-      <Title level={2}>🎉 Setup Complete!</Title>
+      <Title level={2}>Setup Complete!</Title>
       <Text className="text-gray-600">
         You have successfully created your service and OAuth client.
       </Text>
