@@ -38,7 +38,7 @@ export function OnboardingSuccess({ organizationId, onBack }: OnboardingSuccessP
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Link href={`/organization/${organizationId}/recipe`}>
+        <Link href={`/organization/${organizationId}/recipes/oauth-recipe`}>
           <Button>Start Config Recipe</Button>
         </Link>
       </div>

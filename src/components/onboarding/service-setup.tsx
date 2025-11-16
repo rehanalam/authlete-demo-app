@@ -13,7 +13,7 @@ import { Title } from "../ui/title";
 import { Card, CardContent } from "../ui/card";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { Textarea } from "../ui/textarea";
-import { API_CLUSTERS } from "../../../types";
+import { API_CLUSTERS } from "@/types";
 import { useCreateService } from "@/hooks/userService";
 import { useOnboardingStore } from "@/stores/oboarding-store";
 

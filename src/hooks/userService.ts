@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/apiClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ServiceFormData, AuthleteService } from "../../types";
+import { ServiceFormData, AuthleteService } from "../types";
 
 export const serviceKeys = {
   all: ["services"] as const,

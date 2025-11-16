@@ -1,3 +1,4 @@
+import { authlete } from "@/lib/authleteSdkClient";
 import { getAccessToken, getDefaultOrganization } from "@/lib/organization";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
@@ -31,8 +32,6 @@ export async function POST(request: NextRequest) {
         ...(data.description && { description: data.description }),
       },
     };
-
-    console.log("Creating service with:", requestBody);
 
     // const response = await fetch("https://login.authlete.com/api/service", {
     //   method: "POST",

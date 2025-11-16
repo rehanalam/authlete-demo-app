@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/apiClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ClientFormData, AuthleteClient } from "../../types";
+import { ClientFormData, AuthleteClient } from "../types";
 
 export const clientKeys = {
   all: ["clients"] as const,

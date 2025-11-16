@@ -1,4 +1,4 @@
-import { Organization } from "../../types";
+import { Organization } from "../types";
 
 export const getAccessToken = (): string => {
   const token = process.env.AUTHLETE_BEARER || "";

@@ -1,5 +1,4 @@
 import { WelcomeCallout } from "@/components/dashboard/callout";
-import { Header } from "@/components/dashboard/header";
 interface PageProps {
   params: { organizationId: string };
 }
@@ -8,8 +7,7 @@ export default async function OrganizationPage({ params }: PageProps) {
   const { organizationId } = await params;
 
   return (
-    <div className=" w-full flex flex-col items-center gap-12">
-      <Header title="Rehan Org" />
+    <div className=" w-full flex flex-col items-center">
       <div className="max-w-3/4 flex items-center justify-between mx-auto ">
         <WelcomeCallout organizationId={organizationId} />
       </div>
