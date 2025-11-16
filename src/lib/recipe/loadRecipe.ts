@@ -1,4 +1,4 @@
-import { Recipe } from "../../../types/recipe";
+import { Recipe } from "@/types/recipe";
 
 export default async function loadRecipe(id: string): Promise<Recipe | null> {
   try {

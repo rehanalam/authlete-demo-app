@@ -1,4 +1,4 @@
-import { Recipe, RecipeStep } from "../../../types/recipe";
+import { Recipe, RecipeStep } from "@/types/recipe";
 
 const steps: RecipeStep[] = [
   // Step 0: Getting Started

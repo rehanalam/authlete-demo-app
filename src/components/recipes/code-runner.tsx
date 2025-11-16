@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ReferenceStep } from "../../../types/recipe";
+import { ReferenceStep } from "@/types/recipe";
 
 interface CodeRunnerProps {
   step: ReferenceStep;

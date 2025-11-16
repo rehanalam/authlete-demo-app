@@ -18,7 +18,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@radix-ui/react-select";
-import { CLIENT_TYPES, APPLICATION_TYPES } from "../../../types";
+import { CLIENT_TYPES, APPLICATION_TYPES } from "@/types";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 

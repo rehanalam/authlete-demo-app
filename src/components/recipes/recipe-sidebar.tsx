@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Recipe } from "../../../types/recipe";
+import { Recipe } from "@/types/recipe";
 
 interface SidebarProps {
   recipe: Recipe;

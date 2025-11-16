@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardDescription, CardFooter } from "@/components/ui/card";
-import { Recipe } from "../../../types/recipe";
+import { Recipe } from "@/types/recipe";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
