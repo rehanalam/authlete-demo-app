@@ -37,11 +37,11 @@ export default async function RecipePage({ params, searchParams }: RecipePagePro
 
   return (
     <>
-      <aside className="w-64 border-r">
+      <aside className="border-r">
         <RecipeSidebar recipe={recipe} currentStepId={currentStepId} />
       </aside>
 
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="p-8 overflow-y-auto">
         <RecipeContent markdown={markdown} />
       </main>
 
