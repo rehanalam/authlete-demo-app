@@ -34,7 +34,7 @@ const clientSchema = z.object({
   redirectUrisText: z.string().optional(),
 });
 
-type ClientForm = z.infer<typeof clientSchema>;
+export type ClientFormData = z.infer<typeof clientSchema>;
 
 interface ClientSetupStepProps {
   onNext: () => void;
@@ -44,14 +44,13 @@ interface ClientSetupStepProps {
 export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps) {
   const createClientMutation = useCreateClient();
   const { serviceId, setClient } = useOnboardingStore();
-
   const {
     register,
     handleSubmit,
     watch,
     control,
     formState: { errors },
-  } = useForm<ClientForm>({
+  } = useForm<ClientFormData>({
     resolver: zodResolver(clientSchema),
     defaultValues: {
       clientName: "",
@@ -65,7 +64,7 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
 
   const clientType = watch("clientType");
 
-  const onSubmit = async (data: ClientForm) => {
+  const onSubmit = async (data: ClientFormData) => {
     if (!serviceId) return;
 
     try {

@@ -27,7 +27,7 @@ const serviceSchema = z.object({
   fapiEnabled: z.boolean().optional(),
 });
 
-type ServiceForm = z.infer<typeof serviceSchema>;
+export type ServiceFormData = z.infer<typeof serviceSchema>;
 
 interface ServiceSetupStepProps {
   organizationId: string;
@@ -48,7 +48,7 @@ export default function ServiceSetupStep({
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<ServiceForm>({
+  } = useForm<ServiceFormData>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
       serviceName: "",
@@ -60,7 +60,7 @@ export default function ServiceSetupStep({
 
   const selectedCluster = watch("cluster");
 
-  const onSubmit = async (data: ServiceForm) => {
+  const onSubmit = async (data: ServiceFormData) => {
     try {
       const result = await createServiceMutation.mutateAsync({
         ...data,
