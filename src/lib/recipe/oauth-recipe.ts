@@ -7,7 +7,7 @@ const steps: RecipeStep[] = [
     title: "Getting Started",
     type: "page",
     description: "Introduction to the OAuth 2.0 Authorization Code Flow",
-    contentPath: "/recipes/oauth-flow/getting-started.md",
+    contentPath: "/recipes/oauth/getting-started.md",
     requiresExecution: false,
   },
 
@@ -17,7 +17,7 @@ const steps: RecipeStep[] = [
     title: "Process Authorization Request",
     type: "reference",
     description: "Initiate the authorization flow by processing the authorization request",
-    contentPath: "/recipes/oauth-flow/authorization-request.md",
+    contentPath: "/recipes/oauth/authorization-request.md",
     codeSamples: [
       {
         language: "nodejs",
@@ -71,7 +71,7 @@ run();`,
     title: "Issue Authorization",
     type: "reference",
     description: "Issue authorization response after user grants access",
-    contentPath: "/recipes/oauth-flow/authorization-decision.md",
+    contentPath: "/recipes/oauth/authorization-decision.md",
     codeSamples: [
       {
         language: "nodejs",
@@ -124,7 +124,7 @@ run();`,
     title: "Create Access Token",
     type: "reference",
     description: "Exchange authorization code for access token",
-    contentPath: "/recipes/oauth-flow/token-exchange.md",
+    contentPath: "/recipes/oauth/token-exchange.md",
     codeSamples: [
       {
         language: "nodejs",
@@ -179,7 +179,7 @@ run();`,
     title: "Introspect Access Token",
     type: "reference",
     description: "Validate and get information about the access token",
-    contentPath: "/recipes/oauth-flow/introspect.md",
+    contentPath: "/recipes/oauth/introspect.md",
     codeSamples: [
       {
         language: "nodejs",
@@ -232,7 +232,7 @@ run();`,
     title: "Completion",
     type: "simple",
     description: "Congratulations! You have completed the OAuth 2.0 flow",
-    contentPath: "/recipes/oauth-flow/completion.md",
+    contentPath: "/recipes/oauth/completion.md",
     requiresExecution: false,
   },
 ];
