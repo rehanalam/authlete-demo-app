@@ -1,5 +1,4 @@
 import { WelcomeCallout } from "@/components/dashboard/callout";
-import { Header } from "@/components/dashboard/header";
 interface PageProps {
   params: { organizationId: string };
 }
