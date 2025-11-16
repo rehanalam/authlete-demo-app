@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
       redirect_uri: data.redirectUri,
       response_type: data.responseType,
       ...(data.scope && { scope: data.scope }),
-      ...(data.codeChallenge && { code_challenge: data.scope }),
-      ...(data.codeChallengeMethod && { code_challenge_method: data.scope }),
+      ...(data.codeChallenge && { code_challenge: data.codeChallenge }),
+      ...(data.codeChallengeMethod && { code_challenge_method: data.codeChallengeMethod }),
     }).toString();
 
     const result = await authlete.authorization.processRequest({

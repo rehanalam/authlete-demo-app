@@ -3,29 +3,35 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { z } from "zod";
 
-const issueAuthorizationSchema = z.object({
+const introspectTokenSchema = z.object({
   serviceId: z.string(),
-  ticket: z.string(),
-  subject: z.string(),
+  token: z.string(),
+  scopes: z.array(z.string()).optional(),
+  subject: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const data = issueAuthorizationSchema.parse(body);
+    const data = introspectTokenSchema.parse(body);
 
-    const result = await authlete.authorization.issue({
+    const result = await authlete.introspection.process({
       serviceId: data.serviceId,
-      authorizationIssueRequest: {
-        ticket: data.ticket,
+      introspectionRequest: {
+        token: data.token,
+        scopes: data.scopes,
         subject: data.subject,
       },
     });
 
     const responseData = {
-      authorizationCode: result.authorizationCode,
       action: result.action,
+      existent: result.existent,
+      usable: result.usable,
+      sufficient: result.sufficient,
+      refreshable: result.refreshable,
       responseContent: result.responseContent,
+      expiresAt: result.expiresAt,
     };
 
     return NextResponse.json({
@@ -34,7 +40,7 @@ export async function POST(request: NextRequest) {
       fullResponse: result, // For display in response window
     });
   } catch (error: unknown) {
-    console.error("Issue authorization error:", error);
+    console.error("Create token error:", error);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -47,7 +53,7 @@ export async function POST(request: NextRequest) {
       NextResponse.json(
         {
           success: false,
-          message: error.message || "Failed to issue authorization",
+          message: error.message || "Failed to introspec",
         },
         { status: 500 },
       );
