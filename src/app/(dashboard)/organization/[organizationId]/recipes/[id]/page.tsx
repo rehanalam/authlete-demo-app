@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import matter from "gray-matter";
 import RecipeContent from "@/components/recipes/recipe-content";
 import RecipeSidebar from "@/components/recipes/recipe-sidebar";
-import CodeRunner from "@/components/recipes/code-runner";
+import CodeRunner from "@/components/recipes/code-runner/code-runner";
 
 interface RecipePageProps {
   params: {
@@ -13,6 +13,7 @@ interface RecipePageProps {
     step?: string; // optional
   };
 }
+
 export default async function RecipePage({ params, searchParams }: RecipePageProps) {
   const { id: recipeId } = await params;
   const { step: stepParam = "" } = await searchParams;
@@ -36,29 +37,26 @@ export default async function RecipePage({ params, searchParams }: RecipePagePro
   const { content: markdown, data: frontMatter } = matter(file);
 
   return (
-    <div className="flex w-full h-[calc(100vh-64px)]">
-      {/* Sidebar */}
-      <aside className="w-[280px] border-r h-full ">
+    <div className="flex w-full h-[calc(100vh-64px)] overflow-hidden">
+      <aside className="flex-none w-1/5 border-r h-full overflow-auto">
         <RecipeSidebar recipe={recipe} currentStepId={currentStepId} />
       </aside>
 
-      {/* Center Markdown content */}
-      <main className=" p-8 overflow-auto">
+      <main className={`overflow-auto p-8 ${step.type === "reference" ? "w-2/5" : "w-4/5"}`}>
         <RecipeContent markdown={markdown} />
       </main>
 
-      {/* Code Runner */}
-      <aside className="w-2/5 border-l  h-full flex flex-col">
-        <div className="flex-1 overflow-hidden">
-          {step.type === "reference" && (
+      {step.type === "reference" && (
+        <aside className="flex-none w-2/5 border-l h-full flex flex-col">
+          <div className="flex-1 overflow-auto">
             <CodeRunner
               step={step}
               nextStepId={nextStep?.id ?? null}
-              prevStepId={prevStep.id ?? null}
+              prevStepId={prevStep?.id ?? null}
             />
-          )}
-        </div>
-      </aside>
+          </div>
+        </aside>
+      )}
     </div>
   );
 }
