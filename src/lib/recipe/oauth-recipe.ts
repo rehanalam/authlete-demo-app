@@ -42,27 +42,18 @@ async function run() {
 run();`,
       },
     ],
-
     apiConfig: {
+      url: "/oauth/authorization/process",
       method: "POST",
-      url: "/api/recipes/auth/process-authorization",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      bodyTemplate: JSON.stringify({
-        serviceId: "{serviceId}",
-        clientId: "{clientId}",
-        redirectUri: "{redirectUri}",
-        scope: "{scope}",
-        codeChallenge: "{codeChallenge}",
-        codeChallengeMethod: "{codeChallengeMethod}",
-      }),
+      parameters: ["serviceId", "clientIdAlias", "redirectUri", "scope", "responseType"],
+      saveResponse: [
+        {
+          from: "data.ticket",
+          to: "ticket",
+        },
+      ],
     },
     requiresExecution: true,
-    completionCriteria: {
-      expectedStatus: 200,
-      expectedFields: ["ticket", "action"],
-    },
   },
 
   // Step 2: Issue Authorization
@@ -97,25 +88,18 @@ async function run() {
 run();`,
       },
     ],
-
     apiConfig: {
       method: "POST",
-      url: "/api/recipes/auth/issue-authorization",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      bodyTemplate: JSON.stringify({
-        serviceId: "{serviceId}",
-        ticket: "{ticket}",
-        subject: "{subject}",
-      }),
-      requiresAuth: false,
+      url: "/oauth/authorization/issue",
+      parameters: ["serviceId", "ticket", "subject"],
+      saveResponse: [
+        {
+          from: "data.authorizationCode",
+          to: "authorizationCode",
+        },
+      ],
     },
     requiresExecution: true,
-    completionCriteria: {
-      expectedStatus: 200,
-      expectedFields: ["authorizationCode", "action"],
-    },
   },
 
   // Step 3: Create Access Token
@@ -153,24 +137,20 @@ run();`,
     ],
     apiConfig: {
       method: "POST",
-      url: "/api/recipes/auth/create-token",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      bodyTemplate: JSON.stringify({
-        serviceId: "{serviceId}",
-        authorizationCode: "{authorizationCode}",
-        clientId: "{clientId}",
-        clientSecret: "{clientSecret}",
-        redirectUri: "{redirectUri}",
-        codeVerifier: "{codeVerifier}",
-      }),
+      url: "/oauth/token/create",
+      parameters: ["serviceId", "authorizationCode", "clientIdAlias", "redirectUri"],
+      saveResponse: [
+        {
+          from: "data.accessToken",
+          to: "token",
+        },
+        {
+          from: "data.refreshToken",
+          to: "refreshToken",
+        },
+      ],
     },
     requiresExecution: true,
-    completionCriteria: {
-      expectedStatus: 200,
-      expectedFields: ["accessToken"],
-    },
   },
 
   // Step 4: Introspect Token
@@ -208,22 +188,11 @@ run();`,
     ],
     apiConfig: {
       method: "POST",
-      url: "/api/recipes/auth/introspect-token",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      bodyTemplate: JSON.stringify({
-        serviceId: "{serviceId}",
-        token: "{accessToken}",
-        scopes: "{scopes}",
-        subject: "{subject}",
-      }),
+      url: "/oauth/introspect",
+      parameters: ["serviceId", "token", "subject"],
+      saveResponse: [],
     },
     requiresExecution: true,
-    completionCriteria: {
-      expectedStatus: 200,
-      expectedFields: ["action", "usable"],
-    },
   },
 
   // Step 5: Completion
