@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (error instanceof Error) {
-      NextResponse.json(
+      return NextResponse.json(
         {
           success: false,
           message: error.message || "Failed to create service",
@@ -81,6 +81,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return String(error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "An unexpected error occurred",
+      },
+      { status: 500 },
+    );
   }
 }

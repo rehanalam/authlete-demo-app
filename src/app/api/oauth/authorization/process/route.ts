@@ -1,10 +1,10 @@
-import { authlete } from "@/lib/authleteSdkClient";
+import { ACTION_STATUS_MAP, authlete } from "@/lib/authleteSdkClient";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
 const processAuthorizationSchema = z.object({
   serviceId: z.string(),
-  clientId: z.string(),
+  clientIdAlias: z.string(),
   redirectUri: z.string().url(),
   responseType: z.string(),
   scope: z.string().optional(),
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const data = processAuthorizationSchema.parse(body);
 
     const parameters = new URLSearchParams({
-      client_id: data.clientId,
+      client_id: data.clientIdAlias,
       redirect_uri: data.redirectUri,
       response_type: data.responseType,
       ...(data.scope && { scope: data.scope }),
@@ -32,6 +32,19 @@ export async function POST(request: NextRequest) {
         parameters,
       },
     });
+
+    if (result.action && ACTION_STATUS_MAP[result.action]) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: result.resultCode,
+          message: result.resultMessage,
+          action: result.action,
+          fullResponse: result,
+        },
+        { status: ACTION_STATUS_MAP[result.action] },
+      );
+    }
 
     // Extract only necessary data for next step
     const responseData = {

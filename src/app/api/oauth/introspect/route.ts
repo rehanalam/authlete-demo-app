@@ -1,4 +1,4 @@
-import { authlete } from "@/lib/authleteSdkClient";
+import { ACTION_STATUS_MAP, authlete } from "@/lib/authleteSdkClient";
 import { NextRequest, NextResponse } from "next/server";
 
 import { z } from "zod";
@@ -33,6 +33,19 @@ export async function POST(request: NextRequest) {
       responseContent: result.responseContent,
       expiresAt: result.expiresAt,
     };
+
+    if (result.action && ACTION_STATUS_MAP[result.action]) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: result.resultCode,
+          message: result.resultMessage,
+          action: result.action,
+          fullResponse: result,
+        },
+        { status: ACTION_STATUS_MAP[result.action] },
+      );
+    }
 
     return NextResponse.json({
       success: true,
