@@ -6,12 +6,17 @@ export interface CodeSample {
   code: string;
 }
 
+export interface SaverResponse {
+  from: string;
+  to: string;
+}
+
 export interface ApiConfig {
   method: "GET" | "POST" | "PUT" | "DELETE";
   url: string;
   headers?: Record<string, string>;
-  bodyTemplate?: string;
-  requiresAuth?: boolean;
+  parameters: Array<string>;
+  saveResponse: Array<SaverResponse>;
 }
 
 export interface CompletionCriteria {
@@ -40,8 +45,6 @@ export interface ReferenceStep extends BaseStep {
   type: "reference";
   codeSamples: CodeSample[];
   apiConfig: ApiConfig;
-  requiresExecution: true;
-  completionCriteria: CompletionCriteria;
 }
 
 export type RecipeStep = PageStep | ReferenceStep;

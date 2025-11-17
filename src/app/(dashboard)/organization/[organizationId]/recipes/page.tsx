@@ -23,7 +23,7 @@ export default async function RecipesPage({ params }: RecipesPageProps) {
   const { organizationId } = await params;
 
   return (
-    <div className="w-full max-w-3/4 flex items-center justify-between mx-auto gap-4">
+    <div className="w-full max-w-3/4 flex items-center justify-between mx-auto gap-4 mt-12">
       {recipes.map((recipe) => (
         <RecipeCard key={recipe.id} recipe={recipe} organizationId={organizationId} />
       ))}

@@ -37,16 +37,16 @@ export async function POST(request: NextRequest) {
       clientIdAlias: clientAlias,
       clientIdAliasEnabled: true,
       responseTypes: ["CODE", "TOKEN"],
-      tokenAuthMethod: "CLIENT_SECRET_BASIC",
+      tokenAuthMethod: "NONE",
     };
 
-    // const client = await authlete.client.create({
-    //   serviceId: data.serviceId,
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //   client: clientInput as any,
-    // });
+    const client = await authlete.client.create({
+      serviceId: data.serviceId,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      client: clientInput as any,
+    });
 
-    const client = { clientId: 1884468236 };
+    // const client = { clientId: 1884468236 };
 
     return NextResponse.json({
       success: true,

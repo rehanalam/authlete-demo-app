@@ -34,7 +34,7 @@ const clientSchema = z.object({
   redirectUrisText: z.string().optional(),
 });
 
-type ClientForm = z.infer<typeof clientSchema>;
+export type ClientFormData = z.infer<typeof clientSchema>;
 
 interface ClientSetupStepProps {
   onNext: () => void;
@@ -44,28 +44,27 @@ interface ClientSetupStepProps {
 export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps) {
   const createClientMutation = useCreateClient();
   const { serviceId, setClient } = useOnboardingStore();
-
   const {
     register,
     handleSubmit,
     watch,
     control,
     formState: { errors },
-  } = useForm<ClientForm>({
+  } = useForm<ClientFormData>({
     resolver: zodResolver(clientSchema),
     defaultValues: {
       clientName: "",
       clientId: "",
       description: "",
-      clientType: "CONFIDENTIAL",
+      clientType: "PUBLIC",
       applicationType: "WEB",
-      redirectUrisText: "",
+      redirectUrisText: "https://my-client.example.com/cb1",
     },
   });
 
   const clientType = watch("clientType");
 
-  const onSubmit = async (data: ClientForm) => {
+  const onSubmit = async (data: ClientFormData) => {
     if (!serviceId) return;
 
     try {
@@ -84,8 +83,12 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
         serviceId,
       });
 
-      if (result.success && result.client.clientId) {
-        setClient(result.client.clientId.toString());
+      if (result.success && result.client) {
+        setClient({
+          clientId: result.client.clientId,
+          clientIdAlias: result.client.clientIdAlias,
+          clientSecret: result.client.clientSecret,
+        });
         onNext();
       }
     } catch (error: unknown) {
@@ -96,9 +99,9 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+        {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
           <Smartphone className="w-8 h-8 text-green-600" />
-        </div>
+        </div> */}
         <Title level={2} className="mb-2">
           Client Setup
         </Title>

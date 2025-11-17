@@ -10,7 +10,7 @@ interface SidebarProps {
 
 export default function RecipeSidebar({ recipe, currentStepId }: SidebarProps) {
   return (
-    <nav className="w-[300px] p-4 space-y-2">
+    <nav className="w-[280px] p-4 space-y-2">
       {recipe.steps.map((step) => (
         <Link
           key={step.id}

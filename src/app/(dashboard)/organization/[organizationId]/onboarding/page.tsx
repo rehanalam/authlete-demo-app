@@ -8,8 +8,7 @@ export default async function OnboardingPage({ params }: OnboardingPageProps) {
   const { organizationId } = await params;
 
   return (
-    <div>
-      {organizationId}
+    <div className="mt-12">
       <OnboardingWizard organizationId={organizationId} />
     </div>
   );
