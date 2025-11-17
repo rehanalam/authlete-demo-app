@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import RecipeContent from "@/components/recipes/recipe-content";
 import RecipeSidebar from "@/components/recipes/recipe-sidebar";
 import CodeRunner from "@/components/recipes/code-runner/code-runner";
-import { headers } from "next/headers";
+import { loadMarkdownFromPublic } from "@/lib/loadMarkdown";
 
 interface RecipePageProps {
   params: {
@@ -14,18 +14,6 @@ interface RecipePageProps {
   searchParams: {
     step?: string; // optional
   };
-}
-
-export async function getBaseUrl(): Promise<string> {
-  const headersList = await headers(); // <-- await here
-  const host = headersList.get("host"); // hostname + port
-  const protocol = headersList.get("x-forwarded-proto") || "http";
-
-  if (!host) {
-    throw new Error("Cannot determine host from headers.");
-  }
-
-  return `${protocol}://${host}`;
 }
 
 export default async function RecipePage({ params, searchParams }: RecipePageProps) {
@@ -44,12 +32,8 @@ export default async function RecipePage({ params, searchParams }: RecipePagePro
   const nextStep = recipe.steps[stepIndex + 1] ?? null;
   const prevStep = recipe.steps[stepIndex - 1] ?? null;
 
-  // Fetch markdown content
-  const baseUrl = await getBaseUrl();
-  const res = await fetch(`${baseUrl}${step.contentPath}`);
-  if (!res.ok) return notFound();
-
-  const file = await res.text();
+  const file = await loadMarkdownFromPublic(step.contentPath);
+  if (!file) return notFound();
   const { content: markdown } = matter(file);
 
   let nextLabel = "Next";
