@@ -39,7 +39,7 @@ export function OnboardingWizard({ organizationId }: OnboardingWizardProps) {
     <div className="max-w-3xl mx-auto p-6 space-y-6 bg-white shadow rounded">
       <div className="flex items-center">
         <Title level={2} className="flex-2">
-          Setup Authlete
+          Authlete Onboarding
         </Title>
         <div className="flex gap-2 flex-1 items-center">
           <p className="w-40 text-sm text-gray-600">

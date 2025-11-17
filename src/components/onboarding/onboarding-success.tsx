@@ -39,7 +39,7 @@ export function OnboardingSuccess({ organizationId, onBack }: OnboardingSuccessP
           Back
         </Button>
         <Link href={`/organization/${organizationId}/recipes/oauth-recipe`}>
-          <Button>Start Config Recipe</Button>
+          <Button>Start Recipe</Button>
         </Link>
       </div>
     </div>
