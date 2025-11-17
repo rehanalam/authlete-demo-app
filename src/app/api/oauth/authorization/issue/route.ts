@@ -1,3 +1,4 @@
+import { handleApiError } from "@/lib/apiClient";
 import { ACTION_STATUS_MAP, authlete } from "@/lib/authleteSdkClient";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -47,25 +48,6 @@ export async function POST(request: NextRequest) {
       fullResponse: result, // For display in response window
     });
   } catch (error: unknown) {
-    console.error("Issue authorization error:", error);
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, message: "Invalid input", errors: error },
-        { status: 400 },
-      );
-    }
-
-    if (error instanceof Error) {
-      NextResponse.json(
-        {
-          success: false,
-          message: error.message || "Failed to issue authorization",
-        },
-        { status: 500 },
-      );
-    }
-
-    return String(error);
+    return handleApiError(error, "Failed to issue auth");
   }
 }

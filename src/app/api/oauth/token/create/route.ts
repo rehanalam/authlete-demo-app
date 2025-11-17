@@ -1,3 +1,4 @@
+import { handleApiError } from "@/lib/apiClient";
 import { ACTION_STATUS_MAP, authlete } from "@/lib/authleteSdkClient";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
@@ -24,7 +25,6 @@ export async function POST(request: NextRequest) {
       ...(data.codeVerifier && { code_verifier: data.codeVerifier }),
     }).toString();
 
-    // Call Authlete SDK
     const result = await authlete.token.process({
       serviceId: data.serviceId,
       tokenRequest: {
@@ -34,7 +34,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Extract only necessary data for next step
     const responseData = {
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
@@ -63,25 +62,6 @@ export async function POST(request: NextRequest) {
       fullResponse: result, // For display in response window
     });
   } catch (error: unknown) {
-    console.error("Create token error:", error);
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, message: "Invalid input", errors: error },
-        { status: 400 },
-      );
-    }
-
-    if (error instanceof Error) {
-      NextResponse.json(
-        {
-          success: false,
-          message: error.message || "Failed to create token",
-        },
-        { status: 500 },
-      );
-    }
-
-    return String(error);
+    return handleApiError(error, "Failed to create token");
   }
 }
