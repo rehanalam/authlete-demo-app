@@ -4,7 +4,7 @@ name: CI / Tests & Coverage
 on:
   push:
     branches: [main, develop] # Run on main & develop
-  pull_request: # Run on all PRs targeting any branch
+    pull_request: # Run on all PRs targeting any branch
     branches: ["*"]
 
 jobs:
