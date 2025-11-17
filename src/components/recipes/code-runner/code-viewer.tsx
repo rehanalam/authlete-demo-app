@@ -8,7 +8,7 @@ interface Props {
 
 export default function CodeViewer({ code, language }: Props) {
   return (
-    <div className="h-full ">
+    <div className="h-full scrollbar-dark">
       <SyntaxHighlighter
         language={language}
         style={duotoneDark}

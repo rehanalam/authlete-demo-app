@@ -85,9 +85,9 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
 
       if (result.success && result.client) {
         setClient({
-          clientId: result.client.clientId,
-          clientIdAlias: result.client.clientIdAlias,
-          clientSecret: result.client.clientSecret,
+          clientId: result.client.clientId?.toString(),
+          clientIdAlias: result.client.clientIdAlias?.toString(),
+          clientSecret: result.client.clientSecret?.toString(),
         });
         onNext();
       }

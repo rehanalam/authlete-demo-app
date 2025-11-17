@@ -199,7 +199,7 @@ run();`,
   {
     id: "completion",
     title: "Completion",
-    type: "simple",
+    type: "page",
     description: "Congratulations! You have completed the OAuth 2.0 flow",
     contentPath: "/recipes/oauth/completion.md",
     requiresExecution: false,
