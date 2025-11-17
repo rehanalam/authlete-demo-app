@@ -71,7 +71,6 @@ export default function ServiceSetupStep({
         setService(result.service.apiKey.toString());
         onNext();
       }
-      console.error("submit to create service:", data);
     } catch (error: unknown) {
       console.error("Failed to create service:", error);
     }
@@ -79,10 +78,10 @@ export default function ServiceSetupStep({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+      <div className="text-center mb-8 w-[70%] mx-auto">
+        {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
           <IconWrapper icon={Server} size={32} className="text-blue-600" />
-        </div>
+        </div> */}
         <Title level={2} variant="lg" className="mb-2">
           Service Setup
         </Title>
@@ -137,7 +136,7 @@ export default function ServiceSetupStep({
           )}
         </div>
 
-        <div>
+        <div className="gap-2">
           <Label htmlFor="serviceName">Service Name *</Label>
           <Input
             id="serviceName"
@@ -155,7 +154,7 @@ export default function ServiceSetupStep({
           )}
         </div>
 
-        <div>
+        <div className="">
           <Label htmlFor="description">Service Description</Label>
           <Textarea
             id="description"
@@ -173,15 +172,14 @@ export default function ServiceSetupStep({
           )}
         </div>
 
-        <div>
-          <Checkbox {...register("fapiEnabled")}>
-            <Text variant="sm" fontWeight="medium">
-              FAPI Profile
-            </Text>
-            <Text variant="sm" color="text-gray-500">
-              Choose whether FAPI 1.0 and FAPI 2.0 settings may be applied to this service.
-            </Text>
-          </Checkbox>
+        <div className="flex flex-col gap-1">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <Checkbox {...register("fapiEnabled")} id="fapiEnabled" className="w-5 h-5" />
+            <span className="text-sm font-medium">FAPI Profile</span>
+          </label>
+          <Text variant="sm" color="text-gray-500" className="ml-7">
+            Choose whether FAPI 1.0 and FAPI 2.0 settings may be applied to this service.
+          </Text>
         </div>
 
         <div className="flex justify-between gap-4 pt-4">

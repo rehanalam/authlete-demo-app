@@ -1,74 +1,65 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ReferenceStep } from "@/types/recipe";
+import { useExecuteRecipeStep } from "@/hooks/useRecipeExecution";
+import { useEffect } from "react";
 
 interface CodeRunnerProps {
   step: ReferenceStep;
   nextStepId: string | null;
+  prevStepId: string | null;
 }
 
-export default function CodeRunner({ step, nextStepId }: CodeRunnerProps) {
+export default function CodeRunner({ step, nextStepId, prevStepId }: CodeRunnerProps) {
   const router = useRouter();
-  const [error, setError] = useState<any>(null);
-  const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
 
-  async function run() {
-    setLoading(true);
-    setError(null);
-    setResult(null);
-
-    try {
-      const res = await fetch(step.apiConfig.url, {
-        method: step.apiConfig.method,
-        headers: step.apiConfig.headers,
-        body: step.apiConfig.bodyTemplate,
-      });
-
-      const json = await res.json();
-
-      if (!res.ok) {
-        setError(json);
-        setLoading(false);
-        return;
-      }
-
-      setResult(json);
-      setLoading(false);
-
-      if (nextStepId) {
-        router.push(`?step=${nextStepId}`);
-      }
-    } catch (err) {
-      setError(err);
-      setLoading(false);
-    }
-  }
-
+  const { mutate, isPending, isError, isSuccess, data, error } = useExecuteRecipeStep();
   const example = step.codeSamples[0]?.code ?? "// No sample";
 
+  useEffect(() => {
+    if (isSuccess && nextStepId) {
+      router.push(`?step=${nextStepId}`);
+    }
+  }, [isSuccess]);
+
+  const onBack = () => {
+    if (prevStepId) {
+      router.push(`?step=${prevStepId}`);
+    }
+  };
+
   return (
-    <div className="w-full space-y-4">
-      <div className="w-full bg-gray-900 p-4 rounded ">
-        <pre className=" text-white  text-sm overflow-x-auto">{example}</pre>
+    <div className="flex flex-col h-full border rounded overflow-hidden">
+      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50">
+        <pre className=" bg-gray-900 text-white p-4 rounded overflow-auto">{example}</pre>
+        <div className="flex-1">
+          {isError && (
+            <pre className="bg-red-100 text-red-800 p-3 rounded overflow-auto">
+              {JSON.stringify(error, null, 2)}
+            </pre>
+          )}
+
+          {isSuccess && (
+            <pre className="bg-green-100 text-green-800 p-3 rounded overflow-auto">
+              {JSON.stringify(data, null, 2)}
+            </pre>
+          )}
+        </div>
       </div>
 
-      <button disabled={loading} onClick={run} className="px-4 py-2 bg-blue-600 text-white rounded">
-        {loading ? "Running…" : "Execute"}
-      </button>
-
-      {error && (
-        <pre className="bg-red-100 text-red-800 p-3 rounded">{JSON.stringify(error, null, 2)}</pre>
-      )}
-
-      {result && (
-        <pre className="bg-green-100 text-green-800 p-3 rounded">
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+      <div className="flex justify-between p-4 border-t bg-white sticky bottom-0">
+        <button onClick={onBack} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+          Back
+        </button>
+        <button
+          onClick={() => mutate({ step })}
+          disabled={isPending}
+          className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+        >
+          {isPending ? "Running…" : "Execute"}
+        </button>
+      </div>
     </div>
   );
 }

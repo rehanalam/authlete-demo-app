@@ -56,9 +56,9 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
       clientName: "",
       clientId: "",
       description: "",
-      clientType: "CONFIDENTIAL",
+      clientType: "PUBLIC",
       applicationType: "WEB",
-      redirectUrisText: "",
+      redirectUrisText: "https://my-client.example.com/cb1",
     },
   });
 
@@ -83,8 +83,12 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
         serviceId,
       });
 
-      if (result.success && result.client.clientId) {
-        setClient(result.client.clientId.toString());
+      if (result.success && result.client) {
+        setClient({
+          clientId: result.client.clientId,
+          clientIdAlias: result.client.clientIdAlias,
+          clientSecret: result.client.clientSecret,
+        });
         onNext();
       }
     } catch (error: unknown) {
@@ -95,9 +99,9 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+        {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
           <Smartphone className="w-8 h-8 text-green-600" />
-        </div>
+        </div> */}
         <Title level={2} className="mb-2">
           Client Setup
         </Title>
