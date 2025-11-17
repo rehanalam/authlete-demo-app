@@ -1,3 +1,4 @@
+import { handleApiError } from "@/lib/apiClient";
 import { authlete } from "@/lib/authleteSdkClient";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
@@ -53,43 +54,6 @@ export async function POST(request: NextRequest) {
       client,
     });
   } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, message: "Invalid input", errors: error },
-        { status: 400 },
-      );
-    }
-
-    if (error instanceof Error) {
-      // Handle SDK error for 201 Created status (which is actually a success!)
-      if (
-        error.message &&
-        error.message.includes("Status 201") &&
-        error.message.includes("Body: {")
-      ) {
-        try {
-          const bodyMatch = error.message.match(/Body: ({.*})$/);
-          if (bodyMatch && bodyMatch[1]) {
-            const client = JSON.parse(bodyMatch[1]);
-            return NextResponse.json({
-              success: true,
-              client,
-            });
-          }
-        } catch (parseError) {
-          console.error("Failed to parse client from error:", parseError);
-        }
-      }
-    }
-
-    return error instanceof Error
-      ? NextResponse.json(
-          {
-            success: false,
-            message: error.message || "Failed to create client",
-          },
-          { status: 500 },
-        )
-      : String(error);
+    return handleApiError(error, "Failed to create client");
   }
 }

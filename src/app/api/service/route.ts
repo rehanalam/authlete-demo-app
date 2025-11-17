@@ -1,3 +1,4 @@
+import { handleApiError } from "@/lib/apiClient";
 import { authlete } from "@/lib/authleteSdkClient";
 import { getAccessToken, getDefaultOrganization } from "@/lib/organization";
 import { NextRequest, NextResponse } from "next/server";
@@ -62,31 +63,6 @@ export async function POST(request: NextRequest) {
       service: responseData,
     });
   } catch (error: unknown) {
-    console.error("Create service error:", error);
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, message: "Invalid input", errors: error },
-        { status: 400 },
-      );
-    }
-
-    if (error instanceof Error) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: error.message || "Failed to create service",
-        },
-        { status: 500 },
-      );
-    }
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "An unexpected error occurred",
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, "Failed to create service");
   }
 }

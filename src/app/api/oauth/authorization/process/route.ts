@@ -1,3 +1,4 @@
+import { handleApiError } from "@/lib/apiClient";
 import { ACTION_STATUS_MAP, authlete } from "@/lib/authleteSdkClient";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
@@ -46,7 +47,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract only necessary data for next step
     const responseData = {
       ticket: result.ticket,
       action: result.action,
@@ -62,24 +62,7 @@ export async function POST(request: NextRequest) {
       data: responseData,
       fullResponse: result, // For display in response window
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.error("Process authorization error:", error);
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, message: "Invalid input", errors: error },
-        { status: 400 },
-      );
-    }
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: error.message || "Failed to process authorization request",
-        details: error,
-      },
-      { status: error.statusCode || 500 },
-    );
+  } catch (error: unknown) {
+    return handleApiError(error, "Failed to process auth");
   }
 }
