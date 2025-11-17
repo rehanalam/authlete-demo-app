@@ -23,6 +23,26 @@ export function handleApiError(error: unknown, fallbackMessage = "Something went
   }
 
   if (error instanceof Error) {
+    // Handle SDK error for 201 Created status (which is actually a success!)
+    if (
+      error.message &&
+      error.message.includes("Status 201") &&
+      error.message.includes("Body: {")
+    ) {
+      try {
+        const bodyMatch = error.message.match(/Body: ({.*})$/);
+        if (bodyMatch && bodyMatch[1]) {
+          const client = JSON.parse(bodyMatch[1]);
+          return NextResponse.json({
+            success: true,
+            client,
+          });
+        }
+      } catch (parseError) {
+        console.error("Failed to parse client from error:", parseError);
+      }
+    }
+
     return NextResponse.json(
       {
         success: false,
