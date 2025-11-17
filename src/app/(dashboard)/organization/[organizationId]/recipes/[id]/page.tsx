@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import RecipeContent from "@/components/recipes/recipe-content";
 import RecipeSidebar from "@/components/recipes/recipe-sidebar";
 import CodeRunner from "@/components/recipes/code-runner/code-runner";
+import { headers } from "next/headers";
 
 interface RecipePageProps {
   params: {
@@ -13,6 +14,18 @@ interface RecipePageProps {
   searchParams: {
     step?: string; // optional
   };
+}
+
+export async function getBaseUrl(): Promise<string> {
+  const headersList = await headers(); // <-- await here
+  const host = headersList.get("host"); // hostname + port
+  const protocol = headersList.get("x-forwarded-proto") || "http";
+
+  if (!host) {
+    throw new Error("Cannot determine host from headers.");
+  }
+
+  return `${protocol}://${host}`;
 }
 
 export default async function RecipePage({ params, searchParams }: RecipePageProps) {
@@ -32,7 +45,7 @@ export default async function RecipePage({ params, searchParams }: RecipePagePro
   const prevStep = recipe.steps[stepIndex - 1] ?? null;
 
   // Fetch markdown content
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl = await getBaseUrl();
   const res = await fetch(`${baseUrl}${step.contentPath}`);
   if (!res.ok) return notFound();
 
