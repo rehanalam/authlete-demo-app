@@ -36,7 +36,7 @@ export function OnboardingWizard({ organizationId }: OnboardingWizardProps) {
   ];
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6 bg-white shadow rounded">
+    <div className="max-w-3xl mx-auto p-6 mb-6 space-y-6 bg-white shadow rounded">
       <div className="flex items-center">
         <Title level={2} className="flex-2">
           Authlete Onboarding

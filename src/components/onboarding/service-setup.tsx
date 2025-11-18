@@ -3,52 +3,49 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Server } from "lucide-react";
-import { Label } from "@radix-ui/react-label";
 import { Button } from "../ui/button";
-import { IconWrapper } from "../ui/icon-wrap";
 import { Input } from "../ui/input";
-import { Text } from "../ui/text";
-import { Title } from "../ui/title";
-import { Card, CardContent } from "../ui/card";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { Textarea } from "../ui/textarea";
+import { Card, CardContent } from "../ui/card";
+import { Checkbox } from "../ui/checkbox"; // You should use shadcn checkbox
+import { Title } from "../ui/title";
+import { Text } from "../ui/text";
 import { API_CLUSTERS } from "@/types";
 import { useCreateService } from "@/hooks/userService";
 import { useOnboardingStore } from "@/stores/oboarding-store";
 
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from "@/components/ui/form";
+
 const serviceSchema = z.object({
-  serviceName: z
-    .string()
-    .min(1, "Service name is required")
-    .max(100, "Service name must be less than 100 characters"),
-  description: z.string().max(200, "Description must be less than 200 characters").optional(),
+  serviceName: z.string().min(1, "Service name is required").max(100),
+  description: z.string().max(200).optional(),
   cluster: z.string().min(1, "Please select an API cluster"),
   fapiEnabled: z.boolean().optional(),
 });
 
 export type ServiceFormData = z.infer<typeof serviceSchema>;
 
-interface ServiceSetupStepProps {
-  organizationId: string;
-  onNext: () => void;
-  onBack: () => void;
-}
-
 export default function ServiceSetupStep({
   organizationId,
   onNext,
   onBack,
-}: ServiceSetupStepProps) {
+}: {
+  organizationId: string;
+  onNext: () => void;
+  onBack: () => void;
+}) {
   const createServiceMutation = useCreateService();
   const { setService } = useOnboardingStore();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<ServiceFormData>({
+  const form = useForm<ServiceFormData>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
       serviceName: "",
@@ -57,8 +54,6 @@ export default function ServiceSetupStep({
       fapiEnabled: false,
     },
   });
-
-  const selectedCluster = watch("cluster");
 
   const onSubmit = async (data: ServiceFormData) => {
     try {
@@ -71,23 +66,19 @@ export default function ServiceSetupStep({
         setService(result.service.apiKey.toString());
         onNext();
       }
-    } catch (error: unknown) {
-      console.error("Failed to create service:", error);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-1xl mx-auto">
       <div className="text-center mb-8 w-[70%] mx-auto">
-        {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-          <IconWrapper icon={Server} size={32} className="text-blue-600" />
-        </div> */}
         <Title level={2} variant="lg" className="mb-2">
           Service Setup
         </Title>
         <Text variant="sm" color="text-gray-600">
-          Configure your OAuth/OIDC service. The service defines authentication flows, token
-          settings, and security policies.
+          Configure your OAuth/OIDC service. The service defines authentication flows and policies.
         </Text>
       </div>
 
@@ -99,98 +90,104 @@ export default function ServiceSetupStep({
         </Card>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
-        <div>
-          <Label className="block mb-2">API Cluster *</Label>
-          <Text variant="sm" color="text-gray-500" className="mb-3">
-            The API Cluster you select will be the location of all data hosted for this service.
-          </Text>
-          <div className="grid grid-cols-4 gap-3">
-            {API_CLUSTERS.map((cluster) => (
-              <label
-                key={cluster.value}
-                className={`
-                  relative flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all
-                  ${
-                    selectedCluster === cluster.value
-                      ? "border-blue-600 bg-blue-50"
-                      : "border-gray-200 hover:border-gray-300"
-                  }
-                `}
-              >
-                <input
-                  type="radio"
-                  value={cluster.value}
-                  {...register("cluster")}
-                  className="sr-only"
-                />
-                <span className="text-2xl mb-1">{cluster.flag}</span>
-                <span className="text-sm font-medium text-gray-900">{cluster.label}</span>
-              </label>
-            ))}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="cluster"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>API Cluster *</FormLabel>
+                <FormDescription>
+                  The API cluster determines where your data will be hosted.
+                </FormDescription>
+
+                <div className="grid grid-cols-4 gap-3 mt-2">
+                  {API_CLUSTERS.map((cluster) => (
+                    <label
+                      key={cluster.value}
+                      className={`
+                        relative flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer transition-all
+                        ${
+                          field.value === cluster.value
+                            ? "border-blue-600 bg-blue-50"
+                            : "border-gray-200 hover:border-gray-300"
+                        }
+                      `}
+                      onClick={() => field.onChange(cluster.value)}
+                    >
+                      <span className="text-2xl mb-1">{cluster.flag}</span>
+                      <span className="text-sm font-medium text-gray-900">{cluster.label}</span>
+                    </label>
+                  ))}
+                </div>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="serviceName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Service Name *</FormLabel>
+                <FormControl>
+                  <Input placeholder="Sample Service" {...field} />
+                </FormControl>
+                <FormDescription>Up to 100 Unicode characters.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Service Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    rows={3}
+                    placeholder="Friendly description for this service"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Up to 200 characters.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="fapiEnabled"
+            render={({ field }) => (
+              <FormItem className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <FormControl>
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <FormLabel>FAPI Profile</FormLabel>
+                </div>
+                <FormDescription>Enable FAPI 1.0 and 2.0 options for this service.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex justify-between gap-4 pt-4">
+            <Button variant="outline" onClick={onBack} disabled={createServiceMutation.isPending}>
+              Back
+            </Button>
+            <Button type="submit" disabled={createServiceMutation.isPending}>
+              {createServiceMutation.isPending ? "Creating Service..." : "Continue"}
+            </Button>
           </div>
-          {errors.cluster && (
-            <Text variant="sm" color="text-red-600">
-              {errors.cluster.message}
-            </Text>
-          )}
-        </div>
-
-        <div className="gap-2">
-          <Label htmlFor="serviceName">Service Name *</Label>
-          <Input
-            id="serviceName"
-            type="text"
-            placeholder="Sample Service"
-            {...register("serviceName")}
-          />
-          <Text variant="sm" color="text-gray-500">
-            The name of this service (up to 100 Unicode characters).
-          </Text>
-          {errors.serviceName && (
-            <Text variant="sm" color="text-red-600">
-              {errors.serviceName.message}
-            </Text>
-          )}
-        </div>
-
-        <div className="">
-          <Label htmlFor="description">Service Description</Label>
-          <Textarea
-            id="description"
-            rows={3}
-            placeholder="Friendly description for this service"
-            {...register("description")}
-          />
-          <Text variant="sm" color="text-gray-500">
-            The description of this service (up to 200 Unicode characters).
-          </Text>
-          {errors.description && (
-            <Text variant="sm" color="text-red-600">
-              {errors.description.message}
-            </Text>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <Checkbox {...register("fapiEnabled")} id="fapiEnabled" className="w-5 h-5" />
-            <span className="text-sm font-medium">FAPI Profile</span>
-          </label>
-          <Text variant="sm" color="text-gray-500" className="ml-7">
-            Choose whether FAPI 1.0 and FAPI 2.0 settings may be applied to this service.
-          </Text>
-        </div>
-
-        <div className="flex justify-between gap-4 pt-4">
-          <Button variant="outline" onClick={onBack} disabled={createServiceMutation.isPending}>
-            Back
-          </Button>
-          <Button type="submit" disabled={createServiceMutation.isPending}>
-            {createServiceMutation.isPending ? "Creating Service..." : "Continue"}
-          </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   );
 }

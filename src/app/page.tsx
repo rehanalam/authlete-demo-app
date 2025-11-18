@@ -1,5 +1,5 @@
 import { getAllOrganizations } from "@/lib/organization";
-import OrganizationCard from "@/components/organization/organization-card";
+import OrgCard from "@/components/organization/org-card";
 import { Title } from "@/components/ui/title";
 import { Text } from "@/components/ui/text";
 
@@ -27,7 +27,7 @@ export default function Home() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {organizations.map((org) => (
-              <OrganizationCard key={org.id} organization={org} />
+              <OrgCard key={org.id} organization={org} />
             ))}
           </div>
         )}
