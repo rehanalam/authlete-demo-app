@@ -19,7 +19,7 @@ const markdownComponents: Components = {
 
 export default function RecipeContent({ markdown }: RecipeContentProps) {
   return (
-    <div className="w-full overflow-auto ">
+    <div className="w-full overflow-auto">
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
         {markdown}
       </ReactMarkdown>

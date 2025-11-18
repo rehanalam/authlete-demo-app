@@ -19,7 +19,7 @@ export default function CodeRunner({ step }: Props) {
   const execution = useRecipeStore((state) => state.executions[step.id]);
 
   return (
-    <div className="flex flex-col h-full border overflow-hidden bg-gray-900">
+    <div className="flex flex-col h-full overflow-hidden bg-gray-900">
       <CodeRunnerHeader
         language={language}
         copied={copied}
