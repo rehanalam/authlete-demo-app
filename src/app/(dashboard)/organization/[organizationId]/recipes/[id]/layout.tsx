@@ -1,3 +1,3 @@
 export default function RecipeLayout({ children }: { children: React.ReactNode }) {
-  return <div className=" w-full flex min-h-screen">{children}</div>;
+  return <div className=" w-full flex ">{children}</div>;
 }

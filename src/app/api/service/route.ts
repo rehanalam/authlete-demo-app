@@ -1,5 +1,4 @@
 import { handleApiError } from "@/lib/apiClient";
-import { authlete } from "@/lib/authleteSdkClient";
 import { getAccessToken, getDefaultOrganization } from "@/lib/organization";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
@@ -25,18 +24,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const requestBody = {
-      apiServerId: org.apiServerId,
-      organizationId: parseInt(org.id),
-      service: {
-        serviceName: data.serviceName,
-        ...(data.description && { description: data.description }),
-      },
-    };
-
     // NOTE:
     // This API call is temporarily disabled because Authlete returns a
     // "plan limit exceeded" error when creating more than 2 services.
+
+    // const requestBody = {
+    //   apiServerId: org.apiServerId,
+    //   organizationId: parseInt(org.id),
+    //   service: {
+    //     serviceName: data.serviceName,
+    //     ...(data.description && { description: data.description }),
+    //   },
+    // };
 
     // const response = await fetch("https://login.authlete.com/api/service", {
     //   method: "POST",

@@ -57,7 +57,7 @@ export default function RecipeFooter({
   return (
     <div className="flex justify-between p-4 border-t border-gray-700 bg-gray-800">
       <Button
-        className="bg-gray-700 hover:bg-gray-600 text-white"
+        className="w-[150px] bg-gray-700 hover:bg-gray-600 text-white"
         onClick={handlePrev}
         disabled={isFirstStep}
       >
@@ -67,7 +67,7 @@ export default function RecipeFooter({
       {currentStep.type === "reference" ? (
         <div className="flex gap-2">
           <Button
-            className={`bg-blue-600 hover:bg-blue-500 text-white`}
+            className={`w-[150px] bg-blue-600 hover:bg-blue-500 text-white`}
             onClick={handleExecute}
             disabled={isPending}
           >
@@ -75,7 +75,7 @@ export default function RecipeFooter({
           </Button>
 
           <Button
-            className="bg-green-600 hover:bg-green-500 text-white"
+            className="w-[150px] bg-green-600 hover:bg-green-500 text-white"
             onClick={handleNext}
             disabled={!stepSucceeded}
           >
@@ -83,7 +83,7 @@ export default function RecipeFooter({
           </Button>
         </div>
       ) : (
-        <Button className="bg-blue-600 hover:bg-blue-500 text-white" onClick={handleNext}>
+        <Button className="w-[150px] bg-blue-600 hover:bg-blue-500 text-white" onClick={handleNext}>
           {isFirstStep ? "Start" : isLastStep ? "Try Next Recipe" : "Next"}
         </Button>
       )}

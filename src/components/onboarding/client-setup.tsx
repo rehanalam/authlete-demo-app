@@ -104,7 +104,6 @@ export default function ClientSetupStep({
         <Title level={2} className="mb-2">
           Client Setup
         </Title>
-        {serviceId && <Text>Service Number: {serviceId}</Text>}
         <Text className="text-gray-600">
           Configure the OAuth client that will authenticate users and request access.
         </Text>
@@ -127,7 +126,6 @@ export default function ClientSetupStep({
                 <FormControl>
                   <Input placeholder="Sample Client" {...field} />
                 </FormControl>
-                <FormDescription>Up to 100 Unicode characters.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -173,7 +171,7 @@ export default function ClientSetupStep({
               <FormItem>
                 <FormLabel>Client Type *</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select disabled onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select client type" />
                     </SelectTrigger>
@@ -186,6 +184,7 @@ export default function ClientSetupStep({
                     </SelectContent>
                   </Select>
                 </FormControl>
+                <FormDescription>Note: Disabled for demo.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -219,6 +218,7 @@ export default function ClientSetupStep({
           <FormField
             control={form.control}
             name="redirectUrisText"
+            disabled
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Redirect URIs (Optional)</FormLabel>
@@ -229,7 +229,7 @@ export default function ClientSetupStep({
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>Add one URI per line.</FormDescription>
+                <FormDescription>Note: Disabled for demo.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
