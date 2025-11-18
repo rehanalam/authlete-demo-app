@@ -34,6 +34,10 @@ export async function POST(request: NextRequest) {
       },
     };
 
+    // NOTE:
+    // This API call is temporarily disabled because Authlete returns a
+    // "plan limit exceeded" error when creating more than 2 services.
+
     // const response = await fetch("https://login.authlete.com/api/service", {
     //   method: "POST",
     //   headers: {

@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Card, CardContent } from "../ui/card";
-import { Checkbox } from "../ui/checkbox"; // You should use shadcn checkbox
+import { Checkbox } from "../ui/checkbox";
 import { Title } from "../ui/title";
 import { Text } from "../ui/text";
 import { API_CLUSTERS } from "@/types";

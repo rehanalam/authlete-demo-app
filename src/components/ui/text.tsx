@@ -5,10 +5,10 @@ type TextVariant = "sm" | "md" | "lg";
 
 interface TextProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
-  as?: "p" | "span"; // element type
+  as?: "p" | "span";
   variant?: TextVariant;
   fontWeight?: "normal" | "medium" | "bold";
-  color?: string; // Tailwind text color
+  color?: string;
   className?: string;
 }
 
@@ -33,7 +33,6 @@ function Text({
   };
 
   const classes = clsx(variantClasses[variant], weightClasses[fontWeight], color, className);
-
   const Tag = as as keyof JSX.IntrinsicElements;
   return <Tag className={classes}>{children}</Tag>;
 }

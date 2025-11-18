@@ -1,4 +1,4 @@
-import { Key, LogOut, User } from "lucide-react";
+import { Key, LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 import React from "react";
 
@@ -14,12 +14,7 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
           <Key className="w-6 h-6 text-gray-700" />
           <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          // onClick={handleLogout}
-          className="flex items-center space-x-1"
-        >
+        <Button variant="outline" size="sm" className="flex items-center space-x-1">
           <LogOut className="w-4 h-4" />
           <span>Logout</span>
         </Button>

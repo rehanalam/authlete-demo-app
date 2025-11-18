@@ -46,10 +46,7 @@ export function useExecuteRecipeStep() {
         }
       });
 
-      // Mark step completed
       recipeStore.addCompletedStep(step.id);
-
-      // Save full API response for output window
       recipeStore.completeStep(step.id, data);
     },
     onError: (err: any, { step }) => {
