@@ -26,15 +26,19 @@ Before you begin, ensure you have:
 This recipe consists of **4 interactive steps**:
 
 ### Step 1: Process Authorization Request
+
 Validate and process an authorization request from a client application. The SDK will check parameters, generate a ticket, and return client/scope information.
 
 ### Step 2: Issue Authorization Response
+
 Simulate user consent and issue an authorization code. This represents the user granting permission to the client application.
 
 ### Step 3: Exchange Code for Access Token
+
 Trade the authorization code for access and refresh tokens. This is the core token exchange in OAuth 2.0.
 
 ### Step 4: Introspect Access Token
+
 Validate the access token and retrieve its metadata. Resource servers use this to verify tokens before granting access.
 
 ## How It Works
@@ -55,6 +59,6 @@ Each step builds on the previous one:
 
 ## Ready to Start?
 
-Click "Next" to begin with the first step: **Process Authorization Request**
+Click "Start" to begin with the first step: **Process Authorization Request**
 
 The journey to understanding OAuth 2.0 starts here! 🚀
