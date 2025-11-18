@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { CODE_THEME } from "./code-viewer";
 
 interface RunnerOutputProps {
   data?: unknown;
@@ -19,7 +21,8 @@ export default function RunnerOutput({
 
   if (!isError && !isSuccess) return null;
 
-  const output = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+  const serialized = typeof data === "string" ? data : JSON.stringify(data ?? {}, null, 2);
+  const output = serialized ?? "";
   const tagText = isError ? "ERROR" : "RESPONSE";
   const tagColor = isError ? "bg-red-800/20 text-red-400" : "bg-green-800/20 text-green-400";
 
@@ -37,16 +40,27 @@ export default function RunnerOutput({
           size="sm"
           variant="outline"
           onClick={handleCopy}
-          className="flex items-center gap-1 border-gray-700 hover:bg-gray-800"
+          className="flex items-center gap-1"
         >
           {copied ? <Check size={16} /> : <Copy size={16} />}
           {copied ? "Copied" : "Copy"}
         </Button>
       </div>
 
-      <pre className="text-sm text-white overflow-auto p-3 rounded bg-gray-900 max-h-64 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+      <SyntaxHighlighter
+        language="json"
+        style={CODE_THEME}
+        wrapLongLines
+        customStyle={{
+          background: "transparent",
+          margin: 0,
+          padding: "12px",
+          maxHeight: "16rem",
+        }}
+        className="text-sm text-white overflow-auto rounded bg-gray-900 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900"
+      >
         {output}
-      </pre>
+      </SyntaxHighlighter>
     </div>
   );
 }

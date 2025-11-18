@@ -30,7 +30,7 @@ export default function CodeRunnerHeader({
   return (
     <div className="flex items-center justify-between px-4 py-2  bg-transparent">
       <Select value={language} onValueChange={onLanguageChange}>
-        <SelectTrigger className="text-white">
+        <SelectTrigger className="w-[150px] text-white border-gray-400">
           <SelectValue />
         </SelectTrigger>
 
@@ -39,7 +39,7 @@ export default function CodeRunnerHeader({
             <SelectItem
               key={lang}
               value={lang}
-              className="data-[state=checked]:bg-blue-100 data-[state=checked]:text-blue-700"
+              className="data-[state=checked]:bg-blue-100 data-[state=checked]:text-gray-700"
             >
               {lang.toUpperCase()}
             </SelectItem>

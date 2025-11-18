@@ -1,5 +1,7 @@
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { duotoneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+export const CODE_THEME = dracula;
 
 interface Props {
   code: string;
@@ -11,10 +13,11 @@ export default function CodeViewer({ code, language }: Props) {
     <div className="h-full scrollbar-dark">
       <SyntaxHighlighter
         language={language}
-        style={duotoneDark}
+        style={dracula}
         wrapLines
         wrapLongLines
         customStyle={{ background: "transparent", margin: 0, height: "100%" }}
+        className="text-sm"
       >
         {code}
       </SyntaxHighlighter>

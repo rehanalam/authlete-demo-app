@@ -45,7 +45,7 @@ export default async function RecipePage({ params, searchParams }: RecipePagePro
         </aside>
 
         <main className="flex-1 flex  overflow-auto">
-          <div className="flex-1 overflow-auto p-8 bg-white">
+          <div className="flex-1 overflow-auto p-8 ">
             <RecipeContent markdown={markdown} />
           </div>
 
