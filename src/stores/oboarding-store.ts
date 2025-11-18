@@ -1,8 +1,9 @@
+import { getServiceId } from "@/lib/service";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export const REDIRECT_URI = "https://my-client.example.com/cb1";
-export const SERVICE_ID = "4252493258";
+const SERVICE_ID = getServiceId();
 
 interface Client {
   clientId?: string | null;

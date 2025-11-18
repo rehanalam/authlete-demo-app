@@ -1,6 +1,6 @@
 import { handleApiError } from "@/lib/apiClient";
 import { getAccessToken, getDefaultOrganization } from "@/lib/organization";
-import { SERVICE_ID } from "@/stores/oboarding-store";
+import { getServiceId } from "@/lib/service";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     //   );
     // }
 
-    const responseData = { apiKey: SERVICE_ID };
+    const responseData = { apiKey: getServiceId() };
     return NextResponse.json({
       success: true,
       service: responseData,
