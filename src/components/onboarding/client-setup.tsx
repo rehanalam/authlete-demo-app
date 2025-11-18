@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCreateClient } from "@/hooks/useClient";
-import { useOnboardingStore } from "@/stores/oboarding-store";
+import { REDIRECT_URI, useOnboardingStore } from "@/stores/oboarding-store";
 
 import { Title } from "@/components/ui/title";
 import { Text } from "@/components/ui/text";
@@ -61,7 +61,7 @@ export default function ClientSetupStep({
       description: "",
       clientType: "PUBLIC",
       applicationType: "WEB",
-      redirectUrisText: "https://my-client.example.com/cb1",
+      redirectUrisText: REDIRECT_URI,
     },
   });
 
@@ -80,7 +80,7 @@ export default function ClientSetupStep({
         description: data.description,
         clientType: data.clientType,
         applicationType: data.applicationType || "WEB",
-        redirectUris,
+        redirectUris: redirectUris || [REDIRECT_URI],
         serviceId,
       });
 

@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+export const REDIRECT_URI = "https://my-client.example.com/cb1";
+export const SERVICE_ID = "4252493258";
+
 interface Client {
   clientId?: string | null;
   clientIdAlias?: string | null;
@@ -22,14 +25,14 @@ type OnboardingState = {
 export const useOnboardingStore = create<OnboardingState>()(
   persist(
     (set) => ({
-      serviceId: "4252493258",
+      serviceId: SERVICE_ID,
       clientId: null,
       clientSecret: null,
       clientIdAlias: null,
       isLoading: false,
       error: undefined,
       responseType: "code",
-      redirectUri: "https://my-client.example.com/cb1",
+      redirectUri: REDIRECT_URI,
       scope: "read",
 
       setService: (serviceId) => set({ serviceId }),
