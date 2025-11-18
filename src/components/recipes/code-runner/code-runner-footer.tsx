@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 interface RunnerFooterProps {
   prevStepId: string | null;
   onBack: () => void;
@@ -17,7 +19,7 @@ export default function RunnerFooter({
 }: RunnerFooterProps) {
   return (
     <div className="flex items-center justify-between p-4 bg-gray-800 border-t border-gray-700">
-      <button
+      <Button
         className={`px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 text-white ${
           !prevStepId ? "opacity-50 cursor-not-allowed" : ""
         }`}
@@ -25,9 +27,9 @@ export default function RunnerFooter({
         disabled={!prevStepId}
       >
         Back
-      </button>
+      </Button>
 
-      <button
+      <Button
         className={`px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 text-white ${
           isPending ? "opacity-50 cursor-not-allowed" : ""
         }`}
@@ -35,7 +37,7 @@ export default function RunnerFooter({
         disabled={isPending}
       >
         {isPending ? "Running..." : executeLabel}
-      </button>
+      </Button>
     </div>
   );
 }
