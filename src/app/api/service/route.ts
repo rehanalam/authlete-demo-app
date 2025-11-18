@@ -25,8 +25,10 @@ export async function POST(request: NextRequest) {
     }
 
     // NOTE:
-    // This API call is temporarily disabled because Authlete returns a
-    // "plan limit exceeded" error when creating more than 2 services.
+    // 1. This API call is temporarily disabled because Authlete returns a
+    //    "plan limit exceeded" error when creating more than 2 services.
+    // 2. The official Authlete SDK does not support this specific API call,
+    //    so we are making a direct fetch request instead.
 
     // const requestBody = {
     //   apiServerId: org.apiServerId,
