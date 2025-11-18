@@ -126,6 +126,7 @@ export default function ClientSetupStep({
                 <FormControl>
                   <Input placeholder="Sample Client" {...field} />
                 </FormControl>
+                <FormDescription>Up to 100 Unicode characters.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
