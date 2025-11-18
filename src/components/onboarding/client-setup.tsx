@@ -1,32 +1,39 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Smartphone } from "lucide-react";
 import { useCreateClient } from "@/hooks/useClient";
 import { useOnboardingStore } from "@/stores/oboarding-store";
 
 import { Title } from "@/components/ui/title";
 import { Text } from "@/components/ui/text";
 import { Input } from "../ui/input";
-import { Label } from "@radix-ui/react-label";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from "@/components/ui/form";
+
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@radix-ui/react-select";
+} from "@/components/ui/select";
+
 import { CLIENT_TYPES, APPLICATION_TYPES } from "@/types";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
 
 const clientSchema = z.object({
-  clientName: z
-    .string()
-    .min(1, "Client name is required")
-    .max(100, "Client name must be less than 100 characters"),
+  clientName: z.string().min(1, "Client name is required").max(100),
   clientId: z.string().optional(),
   description: z.string().max(200).optional(),
   clientType: z.enum(["PUBLIC", "CONFIDENTIAL"]),
@@ -36,21 +43,17 @@ const clientSchema = z.object({
 
 export type ClientFormData = z.infer<typeof clientSchema>;
 
-interface ClientSetupStepProps {
+export default function ClientSetupStep({
+  onNext,
+  onBack,
+}: {
   onNext: () => void;
   onBack: () => void;
-}
-
-export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps) {
+}) {
   const createClientMutation = useCreateClient();
   const { serviceId, setClient } = useOnboardingStore();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors },
-  } = useForm<ClientFormData>({
+
+  const form = useForm<ClientFormData>({
     resolver: zodResolver(clientSchema),
     defaultValues: {
       clientName: "",
@@ -61,8 +64,6 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
       redirectUrisText: "https://my-client.example.com/cb1",
     },
   });
-
-  const clientType = watch("clientType");
 
   const onSubmit = async (data: ClientFormData) => {
     if (!serviceId) return;
@@ -89,26 +90,22 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
           clientIdAlias: result.client.clientIdAlias?.toString(),
           clientSecret: result.client.clientSecret?.toString(),
         });
+
         onNext();
       }
-    } catch (error: unknown) {
-      console.error("Failed to create client:", error);
+    } catch (err) {
+      console.error("Failed to create client:", err);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-1xl mx-auto">
       <div className="text-center mb-8">
-        {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-          <Smartphone className="w-8 h-8 text-green-600" />
-        </div> */}
         <Title level={2} className="mb-2">
           Client Setup
         </Title>
-        {serviceId && <Text>Service Number: {serviceId}</Text>}
         <Text className="text-gray-600">
-          Configure the OAuth client that will authenticate users and request access to protected
-          resources.
+          Configure the OAuth client that will authenticate users and request access.
         </Text>
       </div>
 
@@ -118,110 +115,136 @@ export default function ClientSetupStep({ onNext, onBack }: ClientSetupStepProps
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <Label htmlFor="clientName">Client Name *</Label>
-          <Input
-            id="clientName"
-            type="text"
-            placeholder="Sample Client"
-            {...register("clientName")}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="clientName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Client Name *</FormLabel>
+                <FormControl>
+                  <Input placeholder="Sample Client" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.clientName && (
-            <Text className="text-red-600 text-sm">{errors.clientName.message}</Text>
-          )}
-        </div>
 
-        <div>
-          <Label htmlFor="clientId">Client ID (Optional)</Label>
-          <Input id="clientId" type="text" placeholder="0123456789" {...register("clientId")} />
-          {errors.clientId && (
-            <Text className="text-red-600 text-sm">{errors.clientId.message}</Text>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="description">Client Description</Label>
-          <Textarea
-            id="description"
-            placeholder="Friendly description for this client"
-            rows={2}
-            {...register("description")}
+          <FormField
+            control={form.control}
+            name="clientId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Client ID (Optional)</FormLabel>
+                <FormControl>
+                  <Input placeholder="0123456789" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.description && (
-            <Text className="text-red-600 text-sm">{errors.description.message}</Text>
-          )}
-        </div>
 
-        <div>
-          <Label>Client Type *</Label>
-          <Controller
-            control={control}
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Client Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    rows={2}
+                    placeholder="Friendly description for this client"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Up to 200 characters.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="clientType"
             render={({ field }) => (
-              <Select {...field}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select client type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CLIENT_TYPES.map((t) => (
-                    <SelectItem key={t.value} value={t.value}>
-                      {t.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormItem>
+                <FormLabel>Client Type *</FormLabel>
+                <FormControl>
+                  <Select disabled onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select client type" />
+                    </SelectTrigger>
+                    <SelectContent className="min-w-full">
+                      {CLIENT_TYPES.map((t) => (
+                        <SelectItem key={t.value} value={t.value}>
+                          {t.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormDescription>Note: Disabled for demo.</FormDescription>
+                <FormMessage />
+              </FormItem>
             )}
           />
-          {errors.clientType && (
-            <Text className="text-red-600 text-sm">{errors.clientType.message}</Text>
-          )}
-        </div>
 
-        <div>
-          <Label>Application Type</Label>
-          <Controller
-            control={control}
+          <FormField
+            control={form.control}
             name="applicationType"
             render={({ field }) => (
-              <Select {...field}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select application type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {APPLICATION_TYPES.map((t) => (
-                    <SelectItem key={t.value} value={t.value}>
-                      {t.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormItem>
+                <FormLabel>Application Type</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select application type" />
+                    </SelectTrigger>
+                    <SelectContent className="min-w-full">
+                      {APPLICATION_TYPES.map((t) => (
+                        <SelectItem key={t.value} value={t.value}>
+                          {t.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
-          {errors.applicationType && (
-            <Text className="text-red-600 text-sm">{errors.applicationType.message}</Text>
-          )}
-        </div>
 
-        <div>
-          <Label htmlFor="redirectUrisText">Redirect URIs (Optional)</Label>
-          <Textarea
-            id="redirectUrisText"
-            rows={4}
-            placeholder="https://example.com/callback\nhttps://example.com/oauth/callback"
-            {...register("redirectUrisText")}
+          <FormField
+            control={form.control}
+            name="redirectUrisText"
+            disabled
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Redirect URIs (Optional)</FormLabel>
+                <FormControl>
+                  <Textarea
+                    rows={4}
+                    placeholder={`https://example.com/callback\nhttps://example.com/oauth/callback`}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Note: Disabled for demo.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
 
-        <div className="flex justify-between gap-4 pt-4">
-          <Button variant="outline" onClick={onBack} disabled={createClientMutation.isPending}>
-            Back
-          </Button>
-          <Button type="submit" disabled={createClientMutation.isPending}>
-            {createClientMutation.isPending ? "Creating Client..." : "Continue"}
-          </Button>
-        </div>
-      </form>
+          <div className="flex justify-between gap-4 pt-4">
+            <Button variant="outline" onClick={onBack} disabled={createClientMutation.isPending}>
+              Back
+            </Button>
+            <Button type="submit" disabled={createClientMutation.isPending}>
+              {createClientMutation.isPending ? "Creating Client..." : "Continue"}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

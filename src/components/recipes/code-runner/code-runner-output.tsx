@@ -1,23 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
-import { useState } from "react";
 
-interface Props {
-  isError: boolean;
-  isSuccess: boolean;
-  error: unknown;
-  data: unknown;
+interface RunnerOutputProps {
+  data?: unknown;
+  isError?: boolean;
+  isSuccess?: boolean;
 }
 
-export default function RunnerOutput({ isError, isSuccess, error, data }: Props) {
+export default function RunnerOutput({
+  data,
+  isError = false,
+  isSuccess = false,
+}: RunnerOutputProps) {
   const [copied, setCopied] = useState(false);
 
   if (!isError && !isSuccess) return null;
 
-  const output = isError ? JSON.stringify(error, null, 2) : JSON.stringify(data, null, 2);
-  const tagText = isError ? "ERROR" : "SUCCESS";
+  const output = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+  const tagText = isError ? "ERROR" : "RESPONSE";
   const tagColor = isError ? "bg-red-800/20 text-red-400" : "bg-green-800/20 text-green-400";
 
   const handleCopy = async () => {
@@ -34,14 +37,14 @@ export default function RunnerOutput({ isError, isSuccess, error, data }: Props)
           size="sm"
           variant="outline"
           onClick={handleCopy}
-          className="flex items-center gap-1 border-gray-700 hover:bg-gray-800 "
+          className="flex items-center gap-1 border-gray-700 hover:bg-gray-800"
         >
           {copied ? <Check size={16} /> : <Copy size={16} />}
           {copied ? "Copied" : "Copy"}
         </Button>
       </div>
 
-      <pre className="text-sm text-white overflow-auto p-3 rounded bg-gray-900 max-h-48 scrollbar-dark">
+      <pre className="text-sm text-white overflow-auto p-3 rounded bg-gray-900 max-h-64 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         {output}
       </pre>
     </div>

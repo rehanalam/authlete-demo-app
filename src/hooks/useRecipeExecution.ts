@@ -21,6 +21,7 @@ export function useExecuteRecipeStep() {
         else if (param in recipeStore) body[param] = (recipeStore as any)[param];
         else body[param] = "";
       });
+
       try {
         const response = await apiClient.post(step.apiConfig.url, body);
         return response.data;
@@ -37,18 +38,20 @@ export function useExecuteRecipeStep() {
             recipeStore.setTicket(value);
             break;
           case "authorizationCode":
-            recipeStore.setAuthorizationCode(value.toString());
+            recipeStore.setAuthorizationCode(value?.toString());
             break;
           case "token":
             recipeStore.setTokens(value, recipeStore.refreshToken);
-            break;
-            // case "refreshToken":
-            //   recipeStore.setTokens(recipeStore.token, value);
             break;
         }
       });
 
       recipeStore.addCompletedStep(step.id);
+      recipeStore.completeStep(step.id, data);
+    },
+    onError: (err: any, { step }) => {
+      // Save error response in executions
+      recipeStore.failStep(step.id, err);
     },
   });
 }

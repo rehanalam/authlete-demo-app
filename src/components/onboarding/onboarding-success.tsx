@@ -16,7 +16,7 @@ export function OnboardingSuccess({ organizationId, onBack }: OnboardingSuccessP
   const { serviceId, clientId } = useOnboardingStore();
 
   return (
-    <div className="max-w-2xl mx-auto text-center space-y-6">
+    <div className="w-1xl mx-auto text-center space-y-8">
       <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mx-auto">
         <CheckCircle className="w-10 h-10 text-green-600" />
       </div>
@@ -26,12 +26,13 @@ export function OnboardingSuccess({ organizationId, onBack }: OnboardingSuccessP
         You have successfully created your service and OAuth client.
       </Text>
 
-      <div className="bg-green-50 border border-green-200 p-4 rounded-lg text-left">
+      <div className="flex flex-col  bg-green-50 border border-green-200 p-4 rounded-lg text-left gap-4">
         <Text className="font-semibold text-green-800 mb-1">Service & Client Info:</Text>
-        <Text className="text-sm text-green-900">
-          {serviceId && <span>Service Number: {serviceId}</span>}
-          {clientId && <span>Client ID: {clientId}</span>}
-        </Text>
+
+        <div className="flex flex-col gap-2">
+          {serviceId && <Text> Service Id: {serviceId}</Text>}
+          {clientId && <Text> Client ID: {clientId}</Text>}
+        </div>
       </div>
 
       <div className="flex justify-between gap-4 mt-6">
