@@ -174,7 +174,7 @@ export default function ClientSetupStep({
                 <FormLabel>Client Type *</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select client type" />
                     </SelectTrigger>
                     <SelectContent className="min-w-full">
@@ -199,7 +199,7 @@ export default function ClientSetupStep({
                 <FormLabel>Application Type</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select application type" />
                     </SelectTrigger>
                     <SelectContent className="min-w-full">
